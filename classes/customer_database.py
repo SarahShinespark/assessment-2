@@ -34,6 +34,26 @@ class CustomerData:
             for row in reader:
                 cust.append(Customer(**dict(row)))
         return cust
+
+    def persist_customers(self, source_file):
+        #Saves the Customer list
+        my_path = os.path.abspath(os.path.dirname(__file__))
+        my_path += "/../data"
+        path = os.path.join(my_path, source_file)
+
+        with open(path,'r') as csvfile:
+            headers = csv.DictReader(csvfile)
+            
+        with open(path, "w") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=headers)
+            writer.writeheader()
+            for customer in self.customers:
+                writer.writerow()
+#               nfl_writer = csv.DictWriter(f, ["id", "team", "wins", "losses"])
+#          for team in add_list:
+#               nfl_writer.writerow(team.__dict__)
+
+        
     
     def get_customer_videos_by_id(self, id):
         #Gets a customer object
@@ -63,4 +83,5 @@ class CustomerData:
             print(f"Thank you for joining, {first_name}!")
             return
         raise Exception("Duplicate ID found, couldn't add new customer!")
+        
         

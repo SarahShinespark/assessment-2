@@ -6,25 +6,35 @@ class Customer:
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
+        self.current_video_rentals = current_video_rentals
+
+    def get_videos(self):
         # Convert videos to an array of strings, much easier to manipulate
-        if current_video_rentals == "":
+        if self.current_video_rentals == "":
             # New customers start with no rentals
-            self.video_names = []
+            return []
         else:
             # Customers from a file have their movie NAMES in an array of strings
-            self.video_names = self.parse_video_string(current_video_rentals)
-        
-    def parse_video_string(self, vid_string):
-        return vid_string.split("/")
+            return self.current_video_rentals.split("/")
+
+    # @classmethod
+    # def parse_video_string(cls, vid_string):
+    #     # Converts "Movie1/Movie2/Movie3" -> ["Movie1","Movie2","Movie3"]
+    #     return vid_string.split("/")
+
+    # def get_stringified_videos(self):
+    #     # Converts ["Movie1","Movie2","Movie3"] -> "Movie1/Movie2/Movie3"
+    #     return "/".join(self.video_names)
         
     def __str__(self):
         #Print the customer's info
         output = f"{self.first_name} {self.last_name} has checked out: "
-        if len(self.video_names) == 0:
+        if len(self.current_video_rentals) == 0:
             return output + "NO VIDEOS."
-        for i, name in enumerate(self.video_names):
+        rental_array = self.get_videos()
+        for i, name in enumerate(rental_array):
             output += name
-            if i != len(self.video_names)-1:
+            if i != len(rental_array)-1:
                 output += ", "
             else:
                 output += "."
@@ -33,17 +43,14 @@ class Customer:
     def get_id(self):
         return self.id
 
-    def get_videos(self):
-        return self.video_names
-        
     def get_num_checkouts(self):
-        return len(self.video_names)
+        return len(self.get_videos())
         
     def add_video(self, title):
-        self.video_names.append(title)
+        self.current_video_rentals += "/" + title
         
     def remove_video(self, title):
-        for v in self.video_names:
+        for v in self.get_videos():
             if v.lower() == title.lower():
                 self.video_names.remove(v)
                 return
