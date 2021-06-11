@@ -1,1 +1,3 @@
-# Write your solution here!
+from classes.interface import Interface
+
+Interface()
