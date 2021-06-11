@@ -44,7 +44,7 @@ class Customer:
         
     def remove_video(self, title):
         for v in self.video_names:
-            if v == title:
+            if v.lower() == title.lower():
                 self.video_names.remove(v)
                 return
-        raise Exception("{self.name} doesn't have {title}!")
+        raise Exception(f"{self.first_name} {self.last_name} doesn't have {title}!")

@@ -11,12 +11,12 @@ class Interface:
         self.my_customers = CustomerData("customers.csv")
 
     def rent_video_by_title_and_customer_id(self, title, id):
-        rental = self.my_inventory.get_video_from_title(title)
-        if rental.get_copies() == 0:
-            raise Exception("No copies available for that video!")
         customer = self.my_customers.get_customer_by_id(id)
         if customer.get_num_checkouts() >= self.max_checkouts:
             raise Exception("You've checked out too many videos! Turn one in first!")
+        rental = self.my_inventory.get_video_from_title(title)
+        if rental.get_copies() == 0:
+            raise Exception("No copies available for that video!")
         rental.copies_available -= 1
         customer.add_video(title)
         print(customer)
@@ -31,7 +31,7 @@ class Interface:
     def run(self):
         #Main loop
         while True:
-            main_menu = """\
+            main_menu = """
 Welcome to Code Platoon Video!
 1. View video inventory
 2. View customer's rented videos
@@ -42,12 +42,41 @@ Welcome to Code Platoon Video!
 """
             print(main_menu)
             choice = input("Please enter a selection: ")
-            if choice == "6":
-                break
-        print("Thanks for using Code Platoon Video! Byeeeeeeeee!")
+            try:
+                if choice == "1":
+                    print(self.my_inventory)
+                elif choice == "2":
+                    id_choice = input("Please enter a customer ID: ")
+                    print(self.my_customers.get_customer_by_id(id_choice))
+                elif choice == "3":
+                    #Rent video
+                    print("You want to rent something? Sure thing!")
+                    title = input("Please enter the video's title: ")
+                    id_choice = input("Please enter the customer's id: ")
+                    self.rent_video_by_title_and_customer_id(title, id_choice)
+                elif choice == "4":
+                    #Return video
+                    print("You're ready to return something? Of course!")
+                    title = input("Please enter the video's title: ")
+                    id_choice = input("Please enter the customer's id: ")
+                    self.return_video_by_title_and_customer_id(title, id_choice)
+                elif choice == "5":
+                    #Add new customer
+                    print("Are you new here? We can make an account for you.")
+                    id_choice = input("Please enter a unique id number: ")
+                    first_name = input("Please enter your first name: ")
+                    last_name = input("Please enter your last name: ")
+                    self.my_customers.add_customer(id_choice, first_name, last_name)
+                elif choice == "6":
+                    print("Thanks for using Code Platoon Video! Byeeeeeeeee!")
+                    break
+                else:
+                    raise Exception("That wasn't one of the choices uwu")
+            except Exception as e:
+                print(e)
 
 i = Interface()
 i.run()
-#print(i.my_customers.get_customer_videos_by_id(4))
+# print(i.my_customers.get_customer_videos_by_id(4))
 # i.rent_video_by_title_and_customer_id("Sing", 4)
 # i.return_video_by_title_and_customer_id("The Prestige", 4)

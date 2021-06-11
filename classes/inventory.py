@@ -36,8 +36,8 @@ class Inventory:
         return videos
     
     def get_video_from_title(self, title):
-        # Search Inventory for title "Bowser", needs to match Video.title
+        # Search Inventory for title. I convert to lowercase because it's easy to miss capital "The" in titles
         for v in self.videos:
-            if v.get_title() == title:
+            if v.get_title().lower() == title.lower():
                 return v
         raise Exception("Couldn't find video title.")

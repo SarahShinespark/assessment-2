@@ -9,7 +9,7 @@ class Video:
         self.copies_available = int(copies_available)
 
     def __str__(self):
-        return f"ID {self.id}, {self.title} is rated {self.rating}. We have {self.copies_available} in stock."
+        return f"{self.title} is rated {self.rating}. We have {self.copies_available} in stock."
         
     def get_title(self):
         return self.title

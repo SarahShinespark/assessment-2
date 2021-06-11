@@ -60,6 +60,7 @@ class CustomerData:
             # ID not found; okay to add to database
             new_cust = Customer(id, first_name, last_name)
             self.customers.append(new_cust)
+            print(f"Thank you for joining, {first_name}!")
             return
         raise Exception("Duplicate ID found, couldn't add new customer!")
         
