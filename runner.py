@@ -1,3 +1,4 @@
 from classes.interface import Interface
 
-Interface()
+i = Interface()
+i.run()

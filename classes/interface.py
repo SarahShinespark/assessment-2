@@ -18,7 +18,7 @@ class Interface:
         if rental.get_copies() == 0:
             raise Exception("No copies available for that video!")
         rental.copies_available -= 1
-        customer.add_video(title)
+        customer.add_video(rental.get_title())
         print(customer)
 
     def return_video_by_title_and_customer_id(self, title, id):
@@ -26,7 +26,7 @@ class Interface:
         rental = self.my_inventory.get_video_from_title(title)
         customer.remove_video(title)
         rental.copies_available += 1
-        print(f"{title} has been returned successfully. Thank you!")
+        print(f"{rental.get_title()} has been returned successfully. Thank you!")
 
     def run(self):
         #Main loop
@@ -74,9 +74,5 @@ Welcome to Code Platoon Video!
                     raise Exception("That wasn't one of the choices uwu")
             except Exception as e:
                 print(e)
-
-i = Interface()
-i.run()
-# print(i.my_customers.get_customer_videos_by_id(4))
-# i.rent_video_by_title_and_customer_id("Sing", 4)
-# i.return_video_by_title_and_customer_id("The Prestige", 4)
+        #End main loop, this is where I would persist the data
+        
