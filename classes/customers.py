@@ -8,6 +8,11 @@ class Customer:
         self.last_name = last_name
         self.current_video_rentals = current_video_rentals
 
+    @classmethod
+    def get_headers(self):
+        #Called when saving data; Yes, if the file gets refactored, this will need to be as well.
+        return ["id", "first_name", "last_name", "current_video_rentals"]
+
     def get_videos(self):
         # Convert videos to an array of strings, much easier to manipulate
         if self.current_video_rentals == "":
@@ -17,15 +22,6 @@ class Customer:
             # Customers from a file have their movie NAMES in an array of strings
             return self.current_video_rentals.split("/")
 
-    # @classmethod
-    # def parse_video_string(cls, vid_string):
-    #     # Converts "Movie1/Movie2/Movie3" -> ["Movie1","Movie2","Movie3"]
-    #     return vid_string.split("/")
-
-    # def get_stringified_videos(self):
-    #     # Converts ["Movie1","Movie2","Movie3"] -> "Movie1/Movie2/Movie3"
-    #     return "/".join(self.video_names)
-        
     def __str__(self):
         #Print the customer's info
         output = f"{self.first_name} {self.last_name} has checked out: "
@@ -39,7 +35,16 @@ class Customer:
             else:
                 output += "."
         return output
-
+    
+    def has_title(self, title):
+        #Returns boolean if title already exists in Customer possession
+        temp_array = self.get_videos()
+        for v in temp_array:
+            #Ignore case, because "of" and "the" are easy to mis-capitalize
+            if v.lower() == title.lower():
+                return True
+        return False
+    
     def get_id(self):
         return self.id
 
@@ -47,11 +52,22 @@ class Customer:
         return len(self.get_videos())
         
     def add_video(self, title):
+        #Edge case if string is empty (otherwise they're charged for an empty movie they can't return, don't ask)
+        if self.current_video_rentals == "":
+            self.current_video_rentals = title
         self.current_video_rentals += "/" + title
         
     def remove_video(self, title):
-        for v in self.get_videos():
+        #Removes a video from self.current_video_rentals (string)
+        # Annoying part is getting rid of the "/", so I'm converting to array to remove the element, then converting back to string
+
+        #Convert my videos string to array
+        temp_array = self.get_videos()
+        for v in temp_array:
+            #Ignore case, because "of" and "the" are easy to mis-capitalize
             if v.lower() == title.lower():
-                self.video_names.remove(v)
+                temp_array.remove(v)
+                #Convert my videos array to string
+                self.current_video_rentals = "/".join(temp_array)
                 return
         raise Exception(f"{self.first_name} {self.last_name} doesn't have {title}!")

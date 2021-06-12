@@ -35,6 +35,18 @@ class Inventory:
                 videos.append(Video(**dict(row)))
         return videos
     
+    def persist_inventory(self, source_file):
+        #Saves the Video list to a file
+        my_path = os.path.abspath(os.path.dirname(__file__))
+        my_path += "/../data"
+        path = os.path.join(my_path, source_file)
+
+        with open(path, "w") as csvfile:
+            writer = csv.DictWriter(csvfile,fieldnames=Video.get_headers())
+            writer.writeheader()
+            for video in self.videos:
+                writer.writerow(video.__dict__)
+
     def get_video_from_title(self, title):
         # Search Inventory for title. I convert to lowercase because it's easy to miss capital "The" in titles
         for v in self.videos:

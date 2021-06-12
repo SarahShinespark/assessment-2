@@ -36,25 +36,17 @@ class CustomerData:
         return cust
 
     def persist_customers(self, source_file):
-        #Saves the Customer list
+        #Saves the Customer list to a file
         my_path = os.path.abspath(os.path.dirname(__file__))
         my_path += "/../data"
         path = os.path.join(my_path, source_file)
 
-        with open(path,'r') as csvfile:
-            headers = csv.DictReader(csvfile)
-            
         with open(path, "w") as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=headers)
+            writer = csv.DictWriter(csvfile,fieldnames=Customer.get_headers())
             writer.writeheader()
             for customer in self.customers:
-                writer.writerow()
-#               nfl_writer = csv.DictWriter(f, ["id", "team", "wins", "losses"])
-#          for team in add_list:
-#               nfl_writer.writerow(team.__dict__)
+                writer.writerow(customer.__dict__)
 
-        
-    
     def get_customer_videos_by_id(self, id):
         #Gets a customer object
         #Returns a string of their videos
@@ -73,15 +65,20 @@ class CustomerData:
                 return c
         raise Exception("Couldn't find customer with that ID.")
         
-    def add_customer(self, id, first_name, last_name):
-        try:
-            existing_id = self.get_customer_by_id(id)
-        except:
-            # ID not found; okay to add to database
-            new_cust = Customer(id, first_name, last_name)
-            self.customers.append(new_cust)
-            print(f"Thank you for joining, {first_name}!")
-            return
-        raise Exception("Duplicate ID found, couldn't add new customer!")
-        
+    def add_customer(self, first_name, last_name):
+        #Creates a Customer object with a unique generated ID, and adds them to the container
+
+        #Find largest ID in the Customers container
+        max_id = 0
+        for c in self.customers:
+            cur_id = int(c.get_id())
+            if cur_id > max_id:
+                max_id = cur_id
+        #Add 1 to the largest ID to make a unique entry
+        id = max_id + 1
+        #Hard to remember the program needs <id> to be a string but it displays the same as an integer
+        new_cust = Customer(str(id), first_name, last_name)
+        self.customers.append(new_cust)
+        print(f"Thank you for joining, {first_name} {last_name}! Your ID is {id}. ~DON'T FORGET~")
+
         
