@@ -3,12 +3,13 @@ from classes.inventory import Inventory
 
 class Interface:
 
-    def __init__(self, max_checkouts = 3):
+    def __init__(self, save_after_close = True, max_checkouts = 3):
         #Max # of videos a customer can have out
         self.max_checkouts = max_checkouts
         #Import video and customer data to the container objects
         self.my_inventory = Inventory("inventory.csv")
         self.my_customers = CustomerData("customers.csv")
+        self.save_after_close = save_after_close
 
     def rent_video_by_title_and_customer_id(self, title, id):
         #Option 3
@@ -35,6 +36,9 @@ class Interface:
         customer.remove_video(title)
         rental.set_copies( rental.get_copies() + 1)
         print(f"{title} has been returned successfully. Thank you!")
+        if rental.is_kid_friendly():
+            #Easter egg for WALL-E
+            print("Hope your kids liked it!")
 
     def run(self):
         #Main loop
@@ -85,10 +89,11 @@ Welcome to Code Platoon Video!
             except Exception as e:
                 print(e)
         #End main loop
-        try:
-            # Save changes to files
-            self.my_customers.persist_customers("customers.csv")
-            self.my_inventory.persist_inventory("inventory.csv")
-        except Exception as e:
-            print(e)
+        if self.save_after_close:
+            try:
+                # Save changes to files
+                self.my_customers.persist_customers("customers.csv")
+                self.my_inventory.persist_inventory("inventory.csv")
+            except Exception as e:
+                print(e)
         

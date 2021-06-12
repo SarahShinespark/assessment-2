@@ -24,3 +24,8 @@ class Video:
         
     def set_copies(self, new_copies):
         self.copies_available = new_copies
+        
+    def is_kid_friendly(self):
+        if self.rating == "G":
+            return True
+        return False
