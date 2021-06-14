@@ -13,6 +13,9 @@ class Customer:
         #Called when saving data; Yes, if the file gets refactored, this will need to be as well.
         return ["id", "first_name", "last_name", "current_video_rentals"]
 
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def get_videos(self):
         # Convert videos to an array of strings, much easier to manipulate
         if self.current_video_rentals == "":

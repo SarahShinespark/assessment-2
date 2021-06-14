@@ -97,3 +97,5 @@ Welcome to Code Platoon Video!
             except Exception as e:
                 print(e)
         
+# i = Interface(save_after_close = False)
+# i.run()

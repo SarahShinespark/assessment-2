@@ -47,16 +47,6 @@ class CustomerData:
             for customer in self.customers:
                 writer.writerow(customer.__dict__)
 
-    def get_customer_videos_by_id(self, id):
-        #Gets a customer object
-        #Returns a string of their videos
-        output = ""
-        cust = self.get_customer_by_id(id)
-        for v in cust.get_videos():
-            output += v
-            output += "\n"
-        return output
-
     def get_customer_by_id(self, id):
         #Searches through the list of customers for an id match
         #Returns a customer object
